@@ -1,20 +1,9 @@
 import React, { useState } from 'react';
-import { UserProfile, Question } from '../types/index';
-import { MATH_QUESTIONS, CA_MATH_CHAPTERS } from '../data/mathData';
+import { CA_MATH_CHAPTERS } from '../data/mathData';
+import { getQuestionsForQuiz, getAllQuestions } from '../data/questionManager';
 import { saveUserProfileToCookies, calculateXPAndLevel } from '../utils/cookies';
 
-declare var confetti: any; // loaded via script CDN in index.html
-
-interface QuizPageProps {
-  user: UserProfile;
-  setUser: React.Dispatch<React.SetStateAction<UserProfile>>;
-  selectedChapterIdForQuiz: string | null;
-  setSelectedChapterIdForQuiz: (id: string | null) => void;
-  selectedSubExerciseIdForQuiz: string | null;
-  setSelectedSubExerciseIdForQuiz: (id: string | null) => void;
-}
-
-export const QuizPage: React.FC<QuizPageProps> = ({
+export const QuizPage = ({
   user,
   setUser,
   selectedChapterIdForQuiz,
@@ -23,23 +12,20 @@ export const QuizPage: React.FC<QuizPageProps> = ({
   setSelectedSubExerciseIdForQuiz
 }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(null);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
   const [sessionCorrectCount, setSessionCorrectCount] = useState(0);
   const [sessionAttemptCount, setSessionAttemptCount] = useState(0);
   const [showJumpModal, setShowJumpModal] = useState(false);
   const [jumpSearchQuery, setJumpSearchQuery] = useState('');
 
-  // Filter questions based on sub-exercise first, then chapter, or load all
-  const availableQuestions = selectedSubExerciseIdForQuiz
-    ? MATH_QUESTIONS.filter(q => q.subExerciseId === selectedSubExerciseIdForQuiz)
-    : selectedChapterIdForQuiz
-    ? MATH_QUESTIONS.filter(q => q.chapterId === selectedChapterIdForQuiz)
-    : MATH_QUESTIONS;
+  // Filter questions based on sub-exercise first, then chapter, or load all using questionManager
+  const availableQuestions = getQuestionsForQuiz(selectedChapterIdForQuiz, selectedSubExerciseIdForQuiz);
+  const totalAllQuestions = getAllQuestions();
 
-  const currentQ: Question | undefined = availableQuestions[currentQuestionIndex];
+  const currentQ = availableQuestions[currentQuestionIndex];
 
-  const handleJumpToQuestion = (targetIdx: number) => {
+  const handleJumpToQuestion = (targetIdx) => {
     if (targetIdx >= 0 && targetIdx < availableQuestions.length) {
       setCurrentQuestionIndex(targetIdx);
       setSelectedOptionIndex(null);
@@ -48,7 +34,7 @@ export const QuizPage: React.FC<QuizPageProps> = ({
     }
   };
 
-  const handleSelectOption = (idx: number) => {
+  const handleSelectOption = (idx) => {
     if (isAnswerSubmitted) return;
     setSelectedOptionIndex(idx);
   };
@@ -77,8 +63,8 @@ export const QuizPage: React.FC<QuizPageProps> = ({
     }
 
     // Update User Profile state and save IMMEDIATELY to Cookies
-    setUser((prev: UserProfile) => {
-      const updatedProfile: UserProfile = {
+    setUser((prev) => {
+      const updatedProfile = {
         ...prev,
         totalQuestionsAttempted: prev.totalQuestionsAttempted + 1,
         correctQuestionsCount: isCorrect ? prev.correctQuestionsCount + 1 : prev.correctQuestionsCount,
@@ -136,7 +122,7 @@ export const QuizPage: React.FC<QuizPageProps> = ({
   return (
     <div className="page-wrapper fade-in">
       {/* Quiz Header & Chapter Selector */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', items: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <h1 style={{ fontSize: '26px', color: '#fff' }}>Interactive Math Quiz</h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>
@@ -148,8 +134,8 @@ export const QuizPage: React.FC<QuizPageProps> = ({
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
           <select
             value={selectedSubExerciseIdForQuiz ? `SUB:${selectedSubExerciseIdForQuiz}` : (selectedChapterIdForQuiz || 'ALL')}
-            onChange={(e: any) => {
-              const val: string = e.target.value;
+            onChange={(e) => {
+              const val = e.target.value;
               if (val === 'ALL') {
                 setSelectedChapterIdForQuiz(null);
                 setSelectedSubExerciseIdForQuiz(null);
@@ -177,7 +163,7 @@ export const QuizPage: React.FC<QuizPageProps> = ({
               cursor: 'pointer'
             }}
           >
-            <option value="ALL">All CA Foundation Topics ({MATH_QUESTIONS.length} Questions)</option>
+            <option value="ALL">All CA Foundation Topics ({totalAllQuestions.length} Questions)</option>
             {CA_MATH_CHAPTERS.map(ch => (
               <React.Fragment key={ch.id}>
                 <option value={ch.id}>
@@ -197,7 +183,7 @@ export const QuizPage: React.FC<QuizPageProps> = ({
             <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Jump Q:</span>
             <select
               value={currentQuestionIndex}
-              onChange={(e: { target: { value: any; }; }) => handleJumpToQuestion(Number(e.target.value))}
+              onChange={(e) => handleJumpToQuestion(Number(e.target.value))}
               style={{
                 background: '#0f172a',
                 color: '#38bdf8',
@@ -417,7 +403,7 @@ export const QuizPage: React.FC<QuizPageProps> = ({
                 type="text"
                 placeholder="Search by Q number (e.g. 3) or keywords in question..."
                 value={jumpSearchQuery}
-                onChange={(e: { target: { value: string | ((prev: string) => string); }; }) => setJumpSearchQuery(e.target.value)}
+                onChange={(e) => setJumpSearchQuery(e.target.value)}
                 autoFocus
                 style={{
                   width: '100%',

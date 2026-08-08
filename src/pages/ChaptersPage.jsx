@@ -1,0 +1,246 @@
+import React, { useState } from 'react';
+import { CA_MATH_CHAPTERS } from '../data/mathData';
+
+export const ChaptersPage = ({
+  setActiveTab,
+  setSelectedChapterIdForQuiz,
+  setSelectedSubExerciseIdForQuiz
+}) => {
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [activeFormulaChapter, setActiveFormulaChapter] = useState(null);
+
+  const filteredChapters = selectedCategory === 'All'
+    ? CA_MATH_CHAPTERS
+    : CA_MATH_CHAPTERS.filter(c => c.category === selectedCategory);
+
+  const handleStartChapterQuiz = (chapterId) => {
+    setSelectedSubExerciseIdForQuiz(null);
+    setSelectedChapterIdForQuiz(chapterId);
+    setActiveTab('quiz');
+  };
+
+  const handleStartSubExerciseQuiz = (chapterId, subExerciseId) => {
+    setSelectedChapterIdForQuiz(chapterId);
+    setSelectedSubExerciseIdForQuiz(subExerciseId);
+    setActiveTab('quiz');
+  };
+
+  return (
+    <div className="page-wrapper fade-in">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
+        <div>
+          <h1 style={{ fontSize: '26px', color: '#fff' }}>CA Foundation Quantitative Aptitude Syllabus</h1>
+          <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>
+            Comprehensive chapter notes, key formulas, shortcut memory tricks & marks weightage.
+          </p>
+        </div>
+
+        {/* Category Filters */}
+        <div style={{ display: 'flex', gap: '6px' }}>
+          {['All', 'Math', 'Logical Reasoning', 'Statistics'].map(cat => (
+            <button
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              className={`btn ${selectedCategory === cat ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ padding: '6px 14px', fontSize: '12px' }}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Unified Chapters Grid */}
+      <div className="grid-2" style={{ marginBottom: '32px' }}>
+        {filteredChapters.map(ch => (
+          <div key={ch.id} className="glass-card" style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+              <span className="pill-badge pill-cyan">{ch.category}</span>
+              <span className="pill-badge pill-amber" style={{ fontSize: '13px' }}>
+                Weightage: {ch.weightage}
+              </span>
+            </div>
+
+            <h2 style={{ fontSize: '20px', color: '#fff', marginBottom: '8px' }}>{ch.title}</h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '20px', flex: 1 }}>
+              {ch.description}
+            </p>
+
+            {/* Sub-Exercises / Practice Breakdown */}
+            {ch.subExercises && ch.subExercises.length > 0 ? (
+              <div style={{ background: 'rgba(15, 23, 42, 0.5)', borderRadius: '12px', padding: '12px', marginBottom: '16px', border: '1px solid rgba(56, 189, 248, 0.15)' }}>
+                <div style={{ fontSize: '12px', fontWeight: '700', color: '#38bdf8', marginBottom: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span>📑 Chapter Exercises & Units ({ch.subExercises.length})</span>
+                  <span style={{ fontSize: '10px', color: '#94a3b8', fontWeight: '400' }}>Click Exercise to practice</span>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {ch.subExercises.map(sub => (
+                    <div
+                      key={sub.id}
+                      style={{
+                        background: '#1e293b',
+                        padding: '8px 12px',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(255,255,255,0.08)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        flexWrap: 'wrap',
+                        gap: '8px'
+                      }}
+                    >
+                      <span style={{ fontSize: '12px', color: '#e2e8f0' }}>
+                        <strong style={{ color: '#fbbf24' }}>{sub.title.split(':')[0]}</strong>: {sub.title.split(':')[1] || sub.title}
+                      </span>
+                      <button
+                        onClick={() => handleStartSubExerciseQuiz(ch.id, sub.id)}
+                        style={{
+                          background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
+                          color: '#ffffff',
+                          border: 'none',
+                          padding: '6px 14px',
+                          borderRadius: '6px',
+                          fontSize: '12px',
+                          fontWeight: '700',
+                          cursor: 'pointer',
+                          boxShadow: '0 2px 4px rgba(79, 70, 229, 0.3)',
+                          transition: 'all 0.2s ease'
+                        }}
+                        title={`Start practice for ${sub.title}`}
+                      >
+                        📝 Exercise
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div style={{ background: 'rgba(15, 23, 42, 0.5)', borderRadius: '12px', padding: '12px', marginBottom: '16px', border: '1px solid rgba(56, 189, 248, 0.15)' }}>
+                <div style={{ fontSize: '12px', fontWeight: '700', color: '#38bdf8', marginBottom: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span>📑 Chapter Exercise</span>
+                  <span style={{ fontSize: '10px', color: '#94a3b8', fontWeight: '400' }}>Practice Unit</span>
+                </div>
+                <div
+                  style={{
+                    background: '#1e293b',
+                    padding: '8px 12px',
+                    borderRadius: '8px',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '8px'
+                  }}
+                >
+                  <span style={{ fontSize: '12px', color: '#e2e8f0' }}>
+                    <strong style={{ color: '#fbbf24' }}>Exercise 1</strong>: Main Practice Set
+                  </span>
+                  <button
+                    onClick={() => handleStartChapterQuiz(ch.id)}
+                    style={{
+                      background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
+                      color: '#ffffff',
+                      border: 'none',
+                      padding: '6px 14px',
+                      borderRadius: '6px',
+                      fontSize: '12px',
+                      fontWeight: '700',
+                      cursor: 'pointer',
+                      boxShadow: '0 2px 4px rgba(79, 70, 229, 0.3)',
+                      transition: 'all 0.2s ease'
+                    }}
+                    title={`Start exercise for ${ch.title}`}
+                  >
+                    📝 Exercise
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Key Formulas Preview */}
+            <div style={{ background: 'rgba(15, 23, 42, 0.6)', borderRadius: '12px', padding: '14px', marginBottom: '16px', border: '1px solid var(--border-color)' }}>
+              <div style={{ fontSize: '13px', fontWeight: '700', color: 'var(--cyan)', marginBottom: '8px' }}>
+                📐 Key Formula Preview ({ch.formulas.length} Formulas)
+              </div>
+              <ul style={{ listStyle: 'none', fontSize: '13px', color: 'var(--text-main)' }}>
+                {ch.formulas.slice(0, 2).map((f, idx) => (
+                  <li key={idx} style={{ marginBottom: '4px' }}>
+                    <strong>{f.title}:</strong> <code style={{ color: '#a5b4fc', background: 'rgba(99, 102, 241, 0.15)', padding: '2px 6px', borderRadius: '4px' }}>{f.formula}</code>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button
+                onClick={() => setActiveFormulaChapter(ch)}
+                className="btn btn-secondary"
+                style={{ flex: 1, fontSize: '13px' }}
+              >
+                📖 View All Formulas
+              </button>
+              <button
+                onClick={() => handleStartChapterQuiz(ch.id)}
+                className="btn btn-primary"
+                style={{ flex: 1, fontSize: '13px' }}
+              >
+                ⚡ Practice Full Chapter
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Formula Cheat Sheet Modal */}
+      {activeFormulaChapter && (
+        <div style={{
+          position: 'fixed',
+          top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0, 0, 0, 0.8)',
+          backdropFilter: 'blur(8px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 100,
+          padding: '20px'
+        }}>
+          <div className="glass-card" style={{ maxWidth: '650px', width: '100%', maxHeight: '85vh', overflowY: 'auto', background: '#0f172a', border: '1px solid var(--primary)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h2 style={{ fontSize: '22px', color: '#fff' }}>📐 {activeFormulaChapter.title} Formulas</h2>
+              <button
+                onClick={() => setActiveFormulaChapter(null)}
+                style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '24px', cursor: 'pointer' }}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div style={{ marginBottom: '20px' }}>
+              {activeFormulaChapter.formulas.map((f, i) => (
+                <div key={i} style={{ background: 'rgba(30, 41, 59, 0.7)', padding: '14px', borderRadius: '12px', marginBottom: '12px', border: '1px solid var(--border-color)' }}>
+                  <div style={{ fontWeight: '700', color: 'var(--cyan)', fontSize: '15px', marginBottom: '4px' }}>
+                    {f.title}
+                  </div>
+                  <div style={{ fontSize: '16px', color: '#fef08a', background: 'rgba(0,0,0,0.3)', padding: '8px 12px', borderRadius: '8px', fontFamily: 'monospace', marginBottom: '6px' }}>
+                    {f.formula}
+                  </div>
+                  {f.note && (
+                    <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                      💡 <em>{f.note}</em>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+              <button onClick={() => setActiveFormulaChapter(null)} className="btn btn-secondary">Close</button>
+              <button onClick={() => { const id = activeFormulaChapter.id; setActiveFormulaChapter(null); handleStartChapterQuiz(id); }} className="btn btn-emerald">Start Quiz for this Chapter</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};

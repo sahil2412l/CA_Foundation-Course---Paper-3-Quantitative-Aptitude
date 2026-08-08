@@ -1,13 +1,8 @@
 import React from 'react';
-import { UserProfile } from '../types/index';
 import { RANK_TIERS } from '../utils/cookies';
 import { BADGES_LIST } from '../data/mathData';
 
-interface RankPageProps {
-  user: UserProfile;
-}
-
-export const RankPage: React.FC<RankPageProps> = ({ user }) => {
+export const RankPage = ({ user }) => {
   return (
     <div className="page-wrapper fade-in">
       <div style={{ marginBottom: '28px' }}>

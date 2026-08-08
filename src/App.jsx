@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { UserProfile } from './types/index';
 import { loadUserProfileFromCookies, saveUserProfileToCookies } from './utils/cookies';
 import { Navbar } from './components/Navbar';
 import { Sidebar } from './components/Sidebar';
@@ -11,13 +10,13 @@ import { ProfilePage } from './pages/ProfilePage';
 import { CalculatorPage } from './pages/CalculatorPage';
 import { FlashcardsPage } from './pages/FlashcardsPage';
 
-export const App: React.FC = () => {
-  const [user, setUser] = useState<UserProfile>(() => loadUserProfileFromCookies());
+export const App = () => {
+  const [user, setUser] = useState(() => loadUserProfileFromCookies());
 
   // Navigation State
-  const [activeTab, setActiveTab] = useState<string>('dashboard');
-  const [selectedChapterIdForQuiz, setSelectedChapterIdForQuiz] = useState<string | null>(null);
-  const [selectedSubExerciseIdForQuiz, setSelectedSubExerciseIdForQuiz] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [selectedChapterIdForQuiz, setSelectedChapterIdForQuiz] = useState(null);
+  const [selectedSubExerciseIdForQuiz, setSelectedSubExerciseIdForQuiz] = useState(null);
 
   // Save profile to cookies when browser is closed or refreshed
   useEffect(() => {

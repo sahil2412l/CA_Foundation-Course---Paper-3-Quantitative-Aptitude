@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FLASHCARDS } from '../data/mathData';
 
-export const FlashcardsPage: React.FC = () => {
+export const FlashcardsPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -99,9 +99,9 @@ export const FlashcardsPage: React.FC = () => {
           <button onClick={handlePrev} className="btn btn-secondary" style={{ padding: '10px 20px' }}>
             ← Previous Card
           </button>
-          <span style={{ fontSize: '14px', color: 'var(--text-muted)' }}>
+          <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
             Card {currentIndex + 1} of {FLASHCARDS.length}
-          </span>
+          </div>
           <button onClick={handleNext} className="btn btn-primary" style={{ padding: '10px 20px' }}>
             Next Card →
           </button>

@@ -1,11 +1,9 @@
 // Cookie, LocalStorage, and Audio Synthesizer Manager for CA Foundation Math Web App
 
-import { UserProfile, RankTier } from '../types/index';
-
 const COOKIE_NAME = 'ca_math_user_profile_v1';
 const COOKIE_DAYS = 365;
 
-export const INITIAL_USER_PROFILE: UserProfile = {
+export const INITIAL_USER_PROFILE = {
   name: 'CA Aspirant',
   targetExam: 'CA Foundation Math, LR & Stats',
   watchTimeSeconds: 0,
@@ -24,7 +22,7 @@ export const INITIAL_USER_PROFILE: UserProfile = {
   soundEnabled: true
 };
 
-export const RANK_TIERS: RankTier[] = [
+export const RANK_TIERS = [
   { tierName: 'CA Math Novice', minLevel: 1, maxLevel: 3, badge: '🌱', color: '#38bdf8', description: 'Just started your CA Foundation Math journey!' },
   { tierName: 'Formula Apprentice', minLevel: 4, maxLevel: 7, badge: '📘', color: '#818cf8', description: 'Grasping key formulas in TVM, Ratios & Logarithms.' },
   { tierName: 'Time Value Specialist', minLevel: 8, maxLevel: 12, badge: '⏳', color: '#a78bfa', description: 'Mastered Simple & Compound Interest and Annuities!' },
@@ -34,7 +32,7 @@ export const RANK_TIERS: RankTier[] = [
   { tierName: 'CA Foundation AIR 1', minLevel: 36, maxLevel: 100, badge: '👑', color: '#10b981', description: 'Top Ranker contender! Ready to score 90+ in Foundation Math!' }
 ];
 
-export function setCookie(name: string, value: string, days: number = COOKIE_DAYS): void {
+export function setCookie(name, value, days = COOKIE_DAYS) {
   try {
     const expires = new Date();
     expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
@@ -44,7 +42,7 @@ export function setCookie(name: string, value: string, days: number = COOKIE_DAY
   }
 }
 
-export function getCookie(name: string): string | null {
+export function getCookie(name) {
   try {
     const nameEQ = `${name}=`;
     const ca = document.cookie.split(';');
@@ -60,11 +58,11 @@ export function getCookie(name: string): string | null {
   return null;
 }
 
-export function deleteCookie(name: string): void {
+export function deleteCookie(name) {
   document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
 }
 
-export function saveUserProfileToCookies(profile: UserProfile): void {
+export function saveUserProfileToCookies(profile) {
   try {
     const jsonStr = JSON.stringify(profile);
     setCookie(COOKIE_NAME, jsonStr, COOKIE_DAYS);
@@ -74,12 +72,12 @@ export function saveUserProfileToCookies(profile: UserProfile): void {
   }
 }
 
-export function loadUserProfileFromCookies(): UserProfile {
+export function loadUserProfileFromCookies() {
   try {
     let rawData = getCookie(COOKIE_NAME) || localStorage.getItem(COOKIE_NAME);
     if (rawData) {
       const parsed = JSON.parse(rawData);
-      const merged: UserProfile = {
+      const merged = {
         ...INITIAL_USER_PROFILE,
         ...parsed,
         watchTimeSeconds: Number(parsed.watchTimeSeconds) || 0,
@@ -116,7 +114,7 @@ export function loadUserProfileFromCookies(): UserProfile {
   return INITIAL_USER_PROFILE;
 }
 
-export function calculateXPAndLevel(profile: UserProfile): UserProfile {
+export function calculateXPAndLevel(profile) {
   const accuracyXP = profile.correctQuestionsCount * 4;
   const streakXP = profile.currentStreakDays * 30;
 
@@ -132,7 +130,7 @@ export function calculateXPAndLevel(profile: UserProfile): UserProfile {
   };
 }
 
-export function formatTime(totalSeconds: number): string {
+export function formatTime(totalSeconds) {
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
@@ -143,18 +141,15 @@ export function formatTime(totalSeconds: number): string {
   return `${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
 }
 
-export function getXPForNextLevel(currentLevel: number): { currentLevelMinXP: number; nextLevelXP: number } {
+export function getXPForNextLevel(currentLevel) {
   const currentLevelMinXP = Math.pow(currentLevel - 1, 2) * 100;
   const nextLevelXP = Math.pow(currentLevel, 2) * 100;
   return { currentLevelMinXP, nextLevelXP };
 }
 
-/**
- * Web Audio Synthesizer helper for sound effects (no external audio files needed)
- */
-export function playSound(type: 'correct' | 'incorrect' | 'levelup'): void {
+export function playSound(type) {
   try {
-    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!AudioContext) return;
     const ctx = new AudioContext();
 
@@ -162,9 +157,9 @@ export function playSound(type: 'correct' | 'incorrect' | 'levelup'): void {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
-      osc.frequency.exponentialRampToValueAtTime(659.25, ctx.currentTime + 0.15); // E5
-      osc.frequency.exponentialRampToValueAtTime(783.99, ctx.currentTime + 0.3); // G5
+      osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(659.25, ctx.currentTime + 0.15);
+      osc.frequency.exponentialRampToValueAtTime(783.99, ctx.currentTime + 0.3);
       gain.gain.setValueAtTime(0.15, ctx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
       osc.connect(gain);
@@ -198,7 +193,5 @@ export function playSound(type: 'correct' | 'incorrect' | 'levelup'): void {
         osc.stop(ctx.currentTime + (i + 1) * 0.15);
       });
     }
-  } catch (e) {
-    // Silent fail if audio disabled in browser
-  }
+  } catch (e) { }
 }

@@ -1,14 +1,8 @@
 import React from 'react';
-import { UserProfile } from '../types/index';
 import { getXPForNextLevel } from '../utils/cookies';
 import { CA_MATH_CHAPTERS } from '../data/mathData';
 
-interface DashboardPageProps {
-  user: UserProfile;
-  setActiveTab: (tab: string) => void;
-}
-
-export const DashboardPage: React.FC<DashboardPageProps> = ({ user, setActiveTab }) => {
+export const DashboardPage = ({ user, setActiveTab }) => {
   const accuracyPercent = user.totalQuestionsAttempted > 0
     ? Math.round((user.correctQuestionsCount / user.totalQuestionsAttempted) * 100)
     : 0;

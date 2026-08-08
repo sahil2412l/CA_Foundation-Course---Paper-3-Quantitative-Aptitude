@@ -1,8 +1,8 @@
 // CA Foundation Mathematics, Logical Reasoning & Statistics Complete Data Bank
 
-import { Chapter, Question, Badge, Flashcard } from '../types/index';
+import { INITIAL_QUESTIONS_BANK } from './questions/index';
 
-export const CA_MATH_CHAPTERS: Chapter[] = [
+export const CA_MATH_CHAPTERS = [
   // --- PART A: Business Mathematics (8 Chapters) ---
   {
     id: 'ratio_log',
@@ -10,12 +10,13 @@ export const CA_MATH_CHAPTERS: Chapter[] = [
     weightage: '4 - 6 Marks',
     category: 'Math',
     description: 'Properties of Ratios, Duplicate/Sub-duplicate Ratios, Laws of Indices, Logarithm Change of Base Rule.',
-    questionCount: 8,
+    questionCount: 220,
     subExercises: [
-      { id: 'ex_1a', title: 'Exercise 1A: Ratio & Properties', description: 'Duplicate, Sub-duplicate, Triplicate ratios & Compounding', questionCount: 6, formulasCount: 2 },
-      { id: 'ex_1b', title: 'Exercise 1B: Proportion & Rules', description: 'Mean proportion, Continued proportion, Componendo & Dividendo', questionCount: 5, formulasCount: 2 },
-      { id: 'ex_1c', title: 'Exercise 1C: Laws of Indices', description: 'Integral & Fractional indices, Exponential simplification', questionCount: 5, formulasCount: 3 },
-      { id: 'ex_1d', title: 'Exercise 1D: Logarithms & Change of Base', description: 'Log product, quotient, power rules & base change', questionCount: 6, formulasCount: 4 }
+      { id: 'ex_1a', title: 'Exercise 1A: Ratio & Properties', description: 'Duplicate, Sub-duplicate, Triplicate ratios & Compounding', questionCount: 26, formulasCount: 2 },
+      { id: 'ex_1b', title: 'Exercise 1B: Proportion & Rules', description: 'Mean proportion, Continued proportion, Componendo & Dividendo', questionCount: 30, formulasCount: 2 },
+      { id: 'ex_1c', title: 'Exercise 1C: Laws of Indices', description: 'Integral & Fractional indices, Exponential simplification', questionCount: 30, formulasCount: 3 },
+      { id: 'ex_1d', title: 'Exercise 1D: Logarithms & Change of Base', description: 'Log product, quotient, power rules & base change', questionCount: 25, formulasCount: 4 },
+      { id: 'ex_1e', title: 'Exercise 1E: Additional Question Bank', description: 'Advanced & Combined practice questions from ICAI Question Bank', questionCount: 109, formulasCount: 5 }
     ],
     formulas: [
       { title: 'Duplicate & Sub-duplicate Ratio', formula: 'Duplicate of a:b = a²:b², Sub-duplicate = √a:√b', note: 'Triplicate = a³:b³' },
@@ -253,215 +254,9 @@ export const CA_MATH_CHAPTERS: Chapter[] = [
   },
 ];
 
-export const MATH_QUESTIONS: Question[] = [
-  {
-    id: 'q_1a_1',
-    chapterId: 'ratio_log',
-    subExerciseId: 'ex_1a',
-    chapterName: 'Ratio, Proportion, Indices & Logarithms',
-    difficulty: 'Easy',
-    questionText: 'If a:b = 2:3 and b:c = 4:5, find the compounded ratio a:b:c.',
-    options: ['8:12:15', '6:9:10', '2:3:5', '8:10:15'],
-    correctIndex: 0,
-    explanation: 'Multiply ratios to match b: a:b = 8:12 and b:c = 12:15, so a:b:c = 8:12:15.',
-    formulaUsed: 'Duplicate & Compounding Ratio'
-  },
-  {
-    id: 'q_1a_2',
-    chapterId: 'ratio_log',
-    subExerciseId: 'ex_1a',
-    chapterName: 'Ratio, Proportion, Indices & Logarithms',
-    difficulty: 'Medium',
-    questionText: 'Find the sub-duplicate ratio of 64:81.',
-    options: ['8:9', '16:27', '4:3', '2:3'],
-    correctIndex: 0,
-    explanation: 'Sub-duplicate ratio of a:b is √a : √b = √64 : √81 = 8 : 9.',
-    formulaUsed: 'Sub-duplicate ratio = √a : √b'
-  },
-  {
-    id: 'q_1b_1',
-    chapterId: 'ratio_log',
-    subExerciseId: 'ex_1b',
-    chapterName: 'Ratio, Proportion, Indices & Logarithms',
-    difficulty: 'Medium',
-    questionText: 'Find the mean proportional between 4 and 9.',
-    options: ['6', '5', '6.5', '36'],
-    correctIndex: 0,
-    explanation: 'Mean proportional b = √(a × c) = √(4 × 9) = √36 = 6.',
-    formulaUsed: 'b = √(a × c)'
-  },
-  {
-    id: 'q_1b_2',
-    chapterId: 'ratio_log',
-    subExerciseId: 'ex_1b',
-    chapterName: 'Ratio, Proportion, Indices & Logarithms',
-    difficulty: 'Hard',
-    questionText: 'If a/b = c/d = 3/4, then find the value of (2a + 3c) / (2b + 3d).',
-    options: ['3/4', '1', '9/16', '6/7'],
-    correctIndex: 0,
-    explanation: 'By properties of equal ratios, (pa + qc)/(pb + qd) = a/b = 3/4.',
-    formulaUsed: 'Equal Ratios Addendo property'
-  },
-  {
-    id: 'q_1c_1',
-    chapterId: 'ratio_log',
-    subExerciseId: 'ex_1c',
-    chapterName: 'Ratio, Proportion, Indices & Logarithms',
-    difficulty: 'Easy',
-    questionText: 'Simplify: (2³ × 2⁴) ÷ 2⁵',
-    options: ['4', '2', '8', '16'],
-    correctIndex: 0,
-    explanation: '2^(3+4-5) = 2^2 = 4.',
-    formulaUsed: 'a^m × a^n = a^(m+n)'
-  },
-  {
-    id: 'q_1c_2',
-    chapterId: 'ratio_log',
-    subExerciseId: 'ex_1c',
-    chapterName: 'Ratio, Proportion, Indices & Logarithms',
-    difficulty: 'Medium',
-    questionText: 'If (x^(1/3)) = 3, what is the value of x?',
-    options: ['27', '9', '81', '3'],
-    correctIndex: 0,
-    explanation: 'Cube both sides: (x^(1/3))³ = 3³ ⟹ x = 27.',
-    formulaUsed: 'Laws of Indices: (a^m)^n = a^(m·n)'
-  },
-  {
-    id: 'q_1d_1',
-    chapterId: 'ratio_log',
-    subExerciseId: 'ex_1d',
-    chapterName: 'Ratio, Proportion, Indices & Logarithms',
-    difficulty: 'Hard',
-    questionText: 'Find the value of log₂ 32.',
-    options: ['5', '4', '6', '2'],
-    correctIndex: 0,
-    explanation: 'Since 2⁵ = 32, log₂ 32 = 5.',
-    formulaUsed: 'log_b(b^k) = k'
-  },
-  {
-    id: 'q_1d_2',
-    chapterId: 'ratio_log',
-    subExerciseId: 'ex_1d',
-    chapterName: 'Ratio, Proportion, Indices & Logarithms',
-    difficulty: 'Medium',
-    questionText: 'Find the value of log(a) / log(b) × log(b) / log(c).',
-    options: ['log_c(a)', 'log_a(c)', '1', 'log(a+b)'],
-    correctIndex: 0,
-    explanation: 'By change of base rule: (log a / log b) × (log b / log c) = log a / log c = log_c(a).',
-    formulaUsed: 'Change of base: log_b(a) = log(a)/log(b)'
-  },
-  { id: 'q1',
-    chapterId: 'tvm',
-    chapterName: 'Time Value of Money',
-    difficulty: 'Easy',
-    questionText: 'Find the Simple Interest on ₹8,000 at 7.5% p.a. for 4 years.',
-    options: ['₹2,400', '₹2,600', '₹2,200', '₹2,800'],
-    correctIndex: 0,
-    explanation: 'Simple Interest SI = (P × R × T) / 100 = (8000 × 7.5 × 4) / 100 = 8000 × 0.30 = ₹2,400.',
-    formulaUsed: 'SI = (P × R × T) / 100'
-  },
-  {
-    id: 'q2',
-    chapterId: 'tvm',
-    chapterName: 'Time Value of Money',
-    difficulty: 'Medium',
-    questionText: 'A sum of money doubles itself in 8 years under Simple Interest. In how many years will it become 4 times itself?',
-    options: ['16 years', '24 years', '32 years', '20 years'],
-    correctIndex: 1,
-    explanation: 'Let Principal = P. Amount = 2P → SI = P in 8 years. Rate R = 12.5%. To become 4 times (Amount = 4P), SI needed = 3P. Time T = (100 × 3P)/(P × 12.5) = 24 years.',
-    formulaUsed: 'Time T2 = T1 × (n2 - 1) / (n1 - 1)'
-  },
-  {
-    id: 'q3',
-    chapterId: 'tvm',
-    chapterName: 'Time Value of Money',
-    difficulty: 'Hard',
-    questionText: 'Find the effective rate of interest corresponding to a nominal rate of 8% p.a. compounded quarterly.',
-    options: ['8.00%', '8.24%', '8.32%', '8.16%'],
-    correctIndex: 1,
-    explanation: 'Quarterly rate i = 8% / 4 = 2% = 0.02. m = 4 quarters. Effective rate E = (1 + i)^m - 1 = (1.02)⁴ - 1 = 8.24%.',
-    formulaUsed: 'E = (1 + i)^m - 1'
-  },
-  {
-    id: 'q4',
-    chapterId: 'ratio_log',
-    chapterName: 'Ratio, Proportion & Logarithms',
-    difficulty: 'Easy',
-    questionText: 'If log₂ x = 5, what is the value of x?',
-    options: ['25', '10', '32', '64'],
-    correctIndex: 2,
-    explanation: 'log_b(a) = c ⟺ a = b^c. Here log₂ x = 5 → x = 2⁵ = 32.',
-    formulaUsed: 'log_b(a) = c ⟺ a = b^c'
-  },
-  {
-    id: 'q5',
-    chapterId: 'equations',
-    chapterName: 'Equations & Matrices',
-    difficulty: 'Medium',
-    questionText: 'If α and β are roots of 2x² - 4x + 1 = 0, find the value of α² + β².',
-    options: ['3', '4', '2', '5'],
-    correctIndex: 0,
-    explanation: 'Sum (α + β) = -(-4)/2 = 2. Product (α·β) = 1/2. α² + β² = (α + β)² - 2αβ = (2)² - 2(1/2) = 4 - 1 = 3.',
-    formulaUsed: 'α² + β² = (α + β)² - 2αβ'
-  },
-  {
-    id: 'q6',
-    chapterId: 'pandc',
-    chapterName: 'Permutations & Combinations',
-    difficulty: 'Medium',
-    questionText: 'How many different 4-digit numbers can be formed using digits 1, 2, 3, 4, 5 without repetition?',
-    options: ['120', '60', '24', '720'],
-    correctIndex: 0,
-    explanation: '⁵P₄ = 5! / (5 - 4)! = 120.',
-    formulaUsed: 'nPr = n! / (n - r)!'
-  },
-  {
-    id: 'q7',
-    chapterId: 'ap_gp',
-    chapterName: 'Sequence & Series',
-    difficulty: 'Medium',
-    questionText: 'Find the sum to infinity of the GP: 9, 3, 1, 1/3, ...',
-    options: ['13.5', '12', '15', '10.5'],
-    correctIndex: 0,
-    explanation: 'First term a = 9, Common ratio r = 3/9 = 1/3. S∞ = a / (1 - r) = 9 / (1 - 1/3) = 9 / (2/3) = 27 / 2 = 13.5.',
-    formulaUsed: 'S∞ = a / (1 - r)'
-  },
-  {
-    id: 'q8',
-    chapterId: 'stats_central',
-    chapterName: 'Measures of Central Tendency',
-    difficulty: 'Medium',
-    questionText: 'If Mean = 45 and Median = 48, find the Mode using empirical relation.',
-    options: ['54', '51', '52', '42'],
-    correctIndex: 0,
-    explanation: 'Mode = 3 Median - 2 Mean = 3(48) - 2(45) = 144 - 90 = 54.',
-    formulaUsed: 'Mode = 3 Median - 2 Mean'
-  },
-  {
-    id: 'q9',
-    chapterId: 'logical_reasoning',
-    chapterName: 'Logical Reasoning',
-    difficulty: 'Easy',
-    questionText: 'Find the missing term in series: 4, 9, 25, 49, ?, 169.',
-    options: ['121', '81', '100', '144'],
-    correctIndex: 0,
-    explanation: 'Squares of prime numbers: 2²=4, 3²=9, 5²=25, 7²=49, 11²=121, 13²=169.',
-    formulaUsed: 'Pattern: Square of consecutive primes'
-  },
-  {
-    id: 'q10',
-    chapterId: 'logical_reasoning',
-    chapterName: 'Logical Reasoning',
-    difficulty: 'Medium',
-    questionText: 'A person walks 10 km North, then 6 km South, and then 3 km East. How far and in which direction is he from starting point?',
-    options: ['5 km North-East', '5 km South-East', '7 km East', '5 km North'],
-    correctIndex: 0,
-    explanation: 'Net movement North = 10 - 6 = 4 km. Net movement East = 3 km. Distance = √(4² + 3²) = √(16 + 9) = √25 = 5 km in North-East direction.',
-    formulaUsed: 'Distance = √(North² + East²)'
-  }
-];
+export const MATH_QUESTIONS = INITIAL_QUESTIONS_BANK;
 
-export const FLASHCARDS: Flashcard[] = [
+export const FLASHCARDS = [
   {
     id: 'f1',
     chapterTitle: 'Time Value of Money',
@@ -496,7 +291,7 @@ export const FLASHCARDS: Flashcard[] = [
   }
 ];
 
-export const BADGES_LIST: Badge[] = [
+export const BADGES_LIST = [
   { id: 'badge_welcome', title: 'First Step to CA', description: 'Created your profile and started studying Math.', icon: '🎯' },
   { id: 'badge_10min', title: 'Focus Scholar', description: 'Spent over 10 minutes continuously studying Math.', icon: '⏱️', reqWatchTimeMin: 10 },
   { id: 'badge_5questions', title: 'Problem Solver', description: 'Solved 5 or more questions correctly.', icon: '⚡', reqQuestions: 5 },

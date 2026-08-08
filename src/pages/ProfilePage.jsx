@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
-import { UserProfile } from '../types/index';
 import { saveUserProfileToCookies } from '../utils/cookies';
 
-interface ProfilePageProps {
-  user: UserProfile;
-  setUser: React.Dispatch<React.SetStateAction<UserProfile>>;
-}
-
-export const ProfilePage: React.FC<ProfilePageProps> = ({ user, setUser }) => {
+export const ProfilePage = ({ user, setUser }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [userName, setUserName] = useState(user.name);
   const [dailyGoal, setDailyGoal] = useState(user.dailyGoalMinutes);
@@ -25,7 +19,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ user, setUser }) => {
     ? Math.round((user.correctQuestionsCount / user.totalQuestionsAttempted) * 100)
     : 0;
 
-  const handleSaveProfile = (e: React.FormEvent) => {
+  const handleSaveProfile = (e) => {
     e.preventDefault();
     setUser(prev => {
       const updated = {
@@ -118,7 +112,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ user, setUser }) => {
                 <input
                   type="text"
                   value={userName}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUserName(e.target.value)}
+                  onChange={(e) => setUserName(e.target.value)}
                   style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', background: '#1e293b', border: '1px solid var(--border-color)', color: '#fff', fontSize: '14px' }}
                 />
               </div>
@@ -132,7 +126,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ user, setUser }) => {
                   min="10"
                   max="480"
                   value={dailyGoal}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDailyGoal(Number(e.target.value))}
+                  onChange={(e) => setDailyGoal(Number(e.target.value))}
                   style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', background: '#1e293b', border: '1px solid var(--border-color)', color: '#fff', fontSize: '14px' }}
                 />
               </div>
@@ -187,5 +181,3 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ user, setUser }) => {
     </div>
   );
 };
-
-

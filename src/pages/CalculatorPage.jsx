@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const inputStyle: React.CSSProperties = {
+const inputStyle = {
   width: '100%',
   padding: '12px 14px',
   borderRadius: '10px',
@@ -10,28 +10,28 @@ const inputStyle: React.CSSProperties = {
   fontSize: '15px'
 };
 
-export const CalculatorPage: React.FC = () => {
-  const [calcMode, setCalcMode] = useState<'SI' | 'CI' | 'ANNUITY' | 'EFFECTIVE'>('SI');
+export const CalculatorPage = () => {
+  const [calcMode, setCalcMode] = useState('SI');
 
   // SI Inputs
-  const [siP, setSiP] = useState<number>(10000);
-  const [siR, setSiR] = useState<number>(8);
-  const [siT, setSiT] = useState<number>(5);
+  const [siP, setSiP] = useState(10000);
+  const [siR, setSiR] = useState(8);
+  const [siT, setSiT] = useState(5);
 
   // CI Inputs
-  const [ciP, setCiP] = useState<number>(10000);
-  const [ciR, setCiR] = useState<number>(8);
-  const [ciT, setCiT] = useState<number>(5);
-  const [ciFreq, setCiFreq] = useState<number>(4); // 4 = quarterly
+  const [ciP, setCiP] = useState(10000);
+  const [ciR, setCiR] = useState(8);
+  const [ciT, setCiT] = useState(5);
+  const [ciFreq, setCiFreq] = useState(4); // 4 = quarterly
 
   // Annuity Inputs
-  const [annA, setAnnA] = useState<number>(2000);
-  const [annR, setAnnR] = useState<number>(10);
-  const [annN, setAnnN] = useState<number>(10);
+  const [annA, setAnnA] = useState(2000);
+  const [annR, setAnnR] = useState(10);
+  const [annN, setAnnN] = useState(10);
 
   // Effective Rate Inputs
-  const [effR, setEffR] = useState<number>(12);
-  const [effFreq, setEffFreq] = useState<number>(12); // monthly
+  const [effR, setEffR] = useState(12);
+  const [effFreq, setEffFreq] = useState(12); // monthly
 
   // SI Calculation
   const siInterest = (siP * siR * siT) / 100;
@@ -100,15 +100,15 @@ export const CalculatorPage: React.FC = () => {
             <div>
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>Principal (P in ₹):</label>
-                <input type="number" value={siP} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSiP(Number(e.target.value))} style={inputStyle} />
+                <input type="number" value={siP} onChange={(e) => setSiP(Number(e.target.value))} style={inputStyle} />
               </div>
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>Rate of Interest (R % p.a.):</label>
-                <input type="number" value={siR} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSiR(Number(e.target.value))} style={inputStyle} />
+                <input type="number" value={siR} onChange={(e) => setSiR(Number(e.target.value))} style={inputStyle} />
               </div>
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>Time Period (T in Years):</label>
-                <input type="number" value={siT} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSiT(Number(e.target.value))} style={inputStyle} />
+                <input type="number" value={siT} onChange={(e) => setSiT(Number(e.target.value))} style={inputStyle} />
               </div>
             </div>
           )}
@@ -117,19 +117,19 @@ export const CalculatorPage: React.FC = () => {
             <div>
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>Principal (P in ₹):</label>
-                <input type="number" value={ciP} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCiP(Number(e.target.value))} style={inputStyle} />
+                <input type="number" value={ciP} onChange={(e) => setCiP(Number(e.target.value))} style={inputStyle} />
               </div>
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>Annual Rate (R % p.a.):</label>
-                <input type="number" value={ciR} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCiR(Number(e.target.value))} style={inputStyle} />
+                <input type="number" value={ciR} onChange={(e) => setCiR(Number(e.target.value))} style={inputStyle} />
               </div>
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>Time (T in Years):</label>
-                <input type="number" value={ciT} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCiT(Number(e.target.value))} style={inputStyle} />
+                <input type="number" value={ciT} onChange={(e) => setCiT(Number(e.target.value))} style={inputStyle} />
               </div>
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>Compounding Frequency:</label>
-                <select value={ciFreq} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setCiFreq(Number(e.target.value))} style={inputStyle}>
+                <select value={ciFreq} onChange={(e) => setCiFreq(Number(e.target.value))} style={inputStyle}>
                   <option value={1}>Annual (m=1)</option>
                   <option value={2}>Half-Yearly (m=2)</option>
                   <option value={4}>Quarterly (m=4)</option>
@@ -143,15 +143,15 @@ export const CalculatorPage: React.FC = () => {
             <div>
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>Periodic Payment (A in ₹):</label>
-                <input type="number" value={annA} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAnnA(Number(e.target.value))} style={inputStyle} />
+                <input type="number" value={annA} onChange={(e) => setAnnA(Number(e.target.value))} style={inputStyle} />
               </div>
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>Interest Rate per Period (R %):</label>
-                <input type="number" value={annR} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAnnR(Number(e.target.value))} style={inputStyle} />
+                <input type="number" value={annR} onChange={(e) => setAnnR(Number(e.target.value))} style={inputStyle} />
               </div>
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>Number of Periods (N):</label>
-                <input type="number" value={annN} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAnnN(Number(e.target.value))} style={inputStyle} />
+                <input type="number" value={annN} onChange={(e) => setAnnN(Number(e.target.value))} style={inputStyle} />
               </div>
             </div>
           )}
@@ -160,11 +160,11 @@ export const CalculatorPage: React.FC = () => {
             <div>
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>Nominal Interest Rate (R % p.a.):</label>
-                <input type="number" value={effR} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEffR(Number(e.target.value))} style={inputStyle} />
+                <input type="number" value={effR} onChange={(e) => setEffR(Number(e.target.value))} style={inputStyle} />
               </div>
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>Compounding Frequency per Year:</label>
-                <select value={effFreq} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setEffFreq(Number(e.target.value))} style={inputStyle}>
+                <select value={effFreq} onChange={(e) => setEffFreq(Number(e.target.value))} style={inputStyle}>
                   <option value={2}>Half-Yearly (m=2)</option>
                   <option value={4}>Quarterly (m=4)</option>
                   <option value={12}>Monthly (m=12)</option>
@@ -241,4 +241,3 @@ export const CalculatorPage: React.FC = () => {
     </div>
   );
 };
-
