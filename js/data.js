@@ -1,4 +1,4 @@
-// CA Foundation Quantitative Aptitude Master Data Bank (Vanilla JS)
+﻿// CA Foundation Quantitative Aptitude Master Data Bank (Vanilla JS)
 
 const RANK_TIERS = [
   { tierName: 'Quantitative Aptitude Novice', minLevel: 1, maxLevel: 3, badge: '🌱', color: '#38bdf8', description: 'Just started your CA Foundation Quantitative Aptitude journey!' },
@@ -194,7 +194,8 @@ const CA_MATH_CHAPTERS = [
 ];
 
 const MATH_QUESTIONS = [
-{
+
+  {
     id: 'q_1a_1',
     chapterId: 'ratio_log',
     subExerciseId: 'ex_1a',
@@ -2831,6 +2832,165 @@ const MATH_QUESTIONS = [
     correctIndex: 2,
     explanation: '1/C = 1/6 - 1/8 = 1/24. 1/A = 1/6 - 1/12 = 1/12. 1/A + 1/C = 1/12 + 1/24 = 1/8 => 8 days.',
     formulaUsed: 'Work and Time Reciprocal Equations'
+  },
+  // {
+  //   id: 'q1',
+  //   chapterId: 'tvm',
+  //   subExerciseId: 'ex_4a',
+  //   chapterName: 'Time Value of Money',
+  //   difficulty: 'Easy',
+  //   questionText: 'Find the Simple Interest on ₹8,000 at 7.5% p.a. for 4 years.',
+  //   options: ['₹2,400', '₹2,600', '₹2,200', '₹2,800'],
+  //   correctIndex: 0,
+  //   explanation: 'Simple Interest SI = (P × R × T) / 100 = (8000 × 7.5 × 4) / 100 = 8000 × 0.30 = ₹2,400.',
+  //   formulaUsed: 'SI = (P × R × T) / 100'
+  // },
+  // {
+  //   id: 'q2',
+  //   chapterId: 'tvm',
+  //   subExerciseId: 'ex_4a',
+  //   chapterName: 'Time Value of Money',
+  //   difficulty: 'Medium',
+  //   questionText: 'A sum of money doubles itself in 8 years under Simple Interest. In how many years will it become 4 times itself?',
+  //   options: ['16 years', '24 years', '32 years', '20 years'],
+  //   correctIndex: 1,
+  //   explanation: 'Let Principal = P. Amount = 2P → SI = P in 8 years. Rate R = 12.5%. To become 4 times (Amount = 4P), SI needed = 3P. Time T = (100 × 3P)/(P × 12.5) = 24 years.',
+  //   formulaUsed: 'Time T2 = T1 × (n2 - 1) / (n1 - 1)'
+  // },
+  // {
+  //   id: 'q3',
+  //   chapterId: 'tvm',
+  //   subExerciseId: 'ex_4b',
+  //   chapterName: 'Time Value of Money',
+  //   difficulty: 'Hard',
+  //   questionText: 'Find the effective rate of interest corresponding to a nominal rate of 8% p.a. compounded quarterly.',
+  //   options: ['8.00%', '8.24%', '8.32%', '8.16%'],
+  //   correctIndex: 1,
+  //   explanation: 'Quarterly rate i = 8% / 4 = 2% = 0.02. m = 4 quarters. Effective rate E = (1 + i)^m - 1 = (1.02)⁴ - 1 = 8.24%.',
+  //   formulaUsed: 'E = (1 + i)^m - 1'
+  // },
+  // {
+  //   id: 'q5',
+  //   chapterId: 'equations',
+  //   chapterName: 'Equations & Matrices',
+  //   difficulty: 'Medium',
+  //   questionText: 'If α and β are roots of 2x² - 4x + 1 = 0, find the value of α² + β².',
+  //   options: ['3', '4', '2', '5'],
+  //   correctIndex: 0,
+  //   explanation: 'Sum (α + β) = -(-4)/2 = 2. Product (α·β) = 1/2. α² + β² = (α + β)² - 2αβ = (2)² - 2(1/2) = 4 - 1 = 3.',
+  //   formulaUsed: 'α² + β² = (α + β)² - 2αβ'
+  // },
+  // {
+  //   id: 'q6',
+  //   chapterId: 'pandc',
+  //   chapterName: 'Permutations & Combinations',
+  //   difficulty: 'Medium',
+  //   questionText: 'How many different 4-digit numbers can be formed using digits 1, 2, 3, 4, 5 without repetition?',
+  //   options: ['120', '60', '24', '720'],
+  //   correctIndex: 0,
+  //   explanation: '⁵P₄ = 5! / (5 - 4)! = 120.',
+  //   formulaUsed: 'nPr = n! / (n - r)!'
+  // },
+  // {
+  //   id: 'q7',
+  //   chapterId: 'ap_gp',
+  //   chapterName: 'Sequence & Series',
+  //   difficulty: 'Medium',
+  //   questionText: 'Find the sum to infinity of the GP: 9, 3, 1, 1/3, ...',
+  //   options: ['13.5', '12', '15', '10.5'],
+  //   correctIndex: 0,
+  //   explanation: 'First term a = 9, Common ratio r = 3/9 = 1/3. S∞ = a / (1 - r) = 9 / (1 - 1/3) = 9 / (2/3) = 27 / 2 = 13.5.',
+  //   formulaUsed: 'S∞ = a / (1 - r)'
+  // },
+
+  {
+    id: 'q9',
+    chapterId: 'number_series',
+    chapterName: 'Logical Reasoning - Number Series',
+    difficulty: 'Easy',
+    questionText: 'Find the missing term in series: 4, 9, 25, 49, ?, 169.',
+    options: ['121', '81', '100', '144'],
+    correctIndex: 0,
+    explanation: 'Squares of prime numbers: 2²=4, 3²=9, 5²=25, 7²=49, 11²=121, 13²=169.',
+    formulaUsed: 'Pattern: Square of consecutive primes'
+  },
+  {
+    id: 'q10',
+    chapterId: 'direction_test',
+    chapterName: 'Logical Reasoning - Direction Sense Test',
+    difficulty: 'Medium',
+    questionText: 'A person walks 10 km North, then 6 km South, and then 3 km East. How far and in which direction is he from starting point?',
+    options: ['5 km North-East', '5 km South-East', '7 km East', '5 km North'],
+    correctIndex: 0,
+    explanation: 'Net movement North = 10 - 6 = 4 km. Net movement East = 3 km. Distance = √(4² + 3²) = √(16 + 9) = √25 = 5 km in North-East direction.',
+    formulaUsed: 'Distance = √(North² + East²)'
+  },
+  {
+    id: 'lr_3',
+    chapterId: 'seating_arrangements',
+    chapterName: 'Logical Reasoning - Seating Arrangements',
+    difficulty: 'Medium',
+    questionText: 'Five friends A, B, C, D, and E are sitting in a row facing North. A is to the immediate right of B, and E is to the immediate left of B but to the right of C. If D is at the extreme right end, who is sitting in the middle?',
+    options: ['B', 'A', 'C', 'E'],
+    correctIndex: 0,
+    explanation: 'Arrangement from left to right: C, E, B, A, D. The middle person is B.',
+    formulaUsed: 'Linear Seating Arrangement Order'
+  },
+  {
+    id: 'lr_4',
+    chapterId: 'blood_relations',
+    chapterName: 'Logical Reasoning - Blood Relations',
+    difficulty: 'Hard',
+    questionText: 'Pointing to a photograph, a man said "I have no brother or sister, but that man\'s father is my father\'s son." Whose photograph was it?',
+    options: ['His son\'s', 'His own', 'His father\'s', 'His nephew\'s'],
+    correctIndex: 0,
+    explanation: 'Since he has no brother or sister, "my father\'s son" means himself. So "that man\'s father is myself" → photograph is of his son.',
+    formulaUsed: 'Blood Relation Deduction'
+  },
+
+  {
+    id: 'q8',
+    chapterId: 'stats_central',
+    chapterName: 'Measures of Central Tendency',
+    difficulty: 'Medium',
+    questionText: 'If Mean = 45 and Median = 48, find the Mode using empirical relation.',
+    options: ['54', '51', '52', '42'],
+    correctIndex: 0,
+    explanation: 'Mode = 3 Median - 2 Mean = 3(48) - 2(45) = 144 - 90 = 54.',
+    formulaUsed: 'Mode = 3 Median - 2 Mean'
+  },
+  {
+    id: 'stat_2',
+    chapterId: 'dispersion',
+    chapterName: 'Measures of Dispersion',
+    difficulty: 'Medium',
+    questionText: 'If the Standard Deviation of a set of observations is 6, what is the Variance?',
+    options: ['36', '12', '3', '√6'],
+    correctIndex: 0,
+    explanation: 'Variance = (Standard Deviation)² = 6² = 36.',
+    formulaUsed: 'Variance = σ²'
+  },
+  {
+    id: 'stat_3',
+    chapterId: 'probability',
+    chapterName: 'Probability',
+    difficulty: 'Easy',
+    questionText: 'What is the probability of getting a sum of 7 when two fair dice are thrown simultaneously?',
+    options: ['1/6', '1/12', '5/36', '1/4'],
+    correctIndex: 0,
+    explanation: 'Favorable outcomes for sum of 7: (1,6),(2,5),(3,4),(4,3),(5,2),(6,1) = 6 outcomes out of 36. P = 6/36 = 1/6.',
+    formulaUsed: 'Probability P = Favorable / Total Outcomes'
+  },
+  {
+    id: 'stat_4',
+    chapterId: 'correlation_reg',
+    chapterName: 'Correlation & Regression',
+    difficulty: 'Hard',
+    questionText: 'If the two regression coefficients are bxy = 0.8 and byx = 0.45, find the correlation coefficient r.',
+    options: ['0.6', '0.36', '0.625', '0.75'],
+    correctIndex: 0,
+    explanation: 'Correlation coefficient r = √(bxy × byx) = √(0.8 × 0.45) = √0.36 = 0.6.',
+    formulaUsed: 'r = √(bxy × byx)'
   }
 ];
 
