@@ -50,6 +50,7 @@ function navigateTo(tab, chapterId = null, subExerciseId = null) {
   switch (tab) {
     case 'dashboard': container.innerHTML = renderDashboardView(); break;
     case 'chapters': container.innerHTML = renderChaptersView(); break;
+    case 'table': container.innerHTML = renderTableView(); break;
     case 'flashcards': container.innerHTML = renderFlashcardsView(); break;
     case 'calculator': container.innerHTML = renderCalculatorView(); break;
     case 'quiz': container.innerHTML = renderQuizView(); break;
@@ -92,6 +93,7 @@ function renderSidebar() {
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: '📊' },
     { id: 'chapters', label: 'Syllabus & Formulas', icon: '📚' },
+    { id: 'table', label: 'Question Table', icon: '📋' },
     { id: 'flashcards', label: 'Formula Flashcards', icon: '🎴' },
     { id: 'calculator', label: 'CA Calculator', icon: '🧮' },
     { id: 'quiz', label: 'Practice Quiz', icon: '✍️' },
@@ -1062,4 +1064,49 @@ function jumpToQuizIndex(idx) {
   closeJumpModal();
   const container = document.getElementById('app-view');
   if (container) container.innerHTML = renderQuizView();
+}
+
+function renderTableView() {
+  return `
+    <div style="max-width: 1200px; margin: 0 auto; padding: 32px 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <h1 style="font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 4px;">📋 Question Bank Data Table</h1>
+          <p style="font-size: 13px; color: var(--text-dim);">Structured table overview with interactive column search & filters.</p>
+        </div>
+        <div style="padding: 8px 16px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; font-size: 12px; font-weight: 800; color: var(--cyan);">
+          🎯 Total Questions: ${MATH_QUESTIONS.length}
+        </div>
+      </div>
+
+      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px;">
+          <thead>
+            <tr style="border-b: 1px solid var(--border-color); color: var(--text-dim); font-size: 11px; text-transform: uppercase;">
+              <th style="padding: 12px; text-align: center;">#</th>
+              <th style="padding: 12px;">Chapter</th>
+              <th style="padding: 12px;">Question Text</th>
+              <th style="padding: 12px; text-align: center;">Difficulty</th>
+              <th style="padding: 12px; text-align: center;">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${MATH_QUESTIONS.map((q, idx) => `
+              <tr style="border-b: 1px solid rgba(255, 255, 255, 0.05);">
+                <td style="padding: 12px; text-align: center; font-weight: 800; color: var(--text-dim);">${idx + 1}</td>
+                <td style="padding: 12px; font-weight: 700; color: var(--cyan);">${q.chapterName}</td>
+                <td style="padding: 12px; color: #e2e8f0;">${q.questionText}</td>
+                <td style="padding: 12px; text-align: center;">
+                  <span style="padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.3);">${q.difficulty || 'Medium'}</span>
+                </td>
+                <td style="padding: 12px; text-align: center;">
+                  <button onclick="navigateTo('quiz', '${q.chapterId}', '${q.subExerciseId || ''}')" style="padding: 6px 14px; background: var(--primary); color: #fff; border: none; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer;">Practice ⚡</button>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
 }
