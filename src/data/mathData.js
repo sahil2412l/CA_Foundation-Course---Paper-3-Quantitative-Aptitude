@@ -1,4 +1,4 @@
-﻿// CA Foundation Quantitative Aptitude Master Data Bank (Vanilla JS)
+// CA Foundation Quantitative Aptitude Master Data Bank (Vanilla JS)
 
 export const RANK_TIERS = [
   { tierName: 'Quantitative Aptitude Novice', minLevel: 1, maxLevel: 3, badge: '🌱', color: '#38bdf8', description: 'Just started your CA Foundation Quantitative Aptitude journey!' },
@@ -2906,6 +2906,7 @@ export const MATH_QUESTIONS = [
   {
     id: 'q9',
     chapterId: 'number_series',
+    subExerciseId: 'ex_lr1',
     chapterName: 'Logical Reasoning - Number Series',
     difficulty: 'Easy',
     questionText: 'Find the missing term in series: 4, 9, 25, 49, ?, 169.',
@@ -2917,6 +2918,7 @@ export const MATH_QUESTIONS = [
   {
     id: 'q10',
     chapterId: 'direction_test',
+    subExerciseId: 'ex_lr2',
     chapterName: 'Logical Reasoning - Direction Sense Test',
     difficulty: 'Medium',
     questionText: 'A person walks 10 km North, then 6 km South, and then 3 km East. How far and in which direction is he from starting point?',
@@ -2928,6 +2930,7 @@ export const MATH_QUESTIONS = [
   {
     id: 'lr_3',
     chapterId: 'seating_arrangements',
+    subExerciseId: 'ex_lr3',
     chapterName: 'Logical Reasoning - Seating Arrangements',
     difficulty: 'Medium',
     questionText: 'Five friends A, B, C, D, and E are sitting in a row facing North. A is to the immediate right of B, and E is to the immediate left of B but to the right of C. If D is at the extreme right end, who is sitting in the middle?',
@@ -2939,6 +2942,7 @@ export const MATH_QUESTIONS = [
   {
     id: 'lr_4',
     chapterId: 'blood_relations',
+    subExerciseId: 'ex_lr4',
     chapterName: 'Logical Reasoning - Blood Relations',
     difficulty: 'Hard',
     questionText: 'Pointing to a photograph, a man said "I have no brother or sister, but that man\'s father is my father\'s son." Whose photograph was it?',
@@ -2947,10 +2951,10 @@ export const MATH_QUESTIONS = [
     explanation: 'Since he has no brother or sister, "my father\'s son" means himself. So "that man\'s father is myself" → photograph is of his son.',
     formulaUsed: 'Blood Relation Deduction'
   },
-
   {
     id: 'q8',
     chapterId: 'stats_central',
+    subExerciseId: 'ex_st1',
     chapterName: 'Measures of Central Tendency',
     difficulty: 'Medium',
     questionText: 'If Mean = 45 and Median = 48, find the Mode using empirical relation.',
@@ -2961,7 +2965,8 @@ export const MATH_QUESTIONS = [
   },
   {
     id: 'stat_2',
-    chapterId: 'dispersion',
+    chapterId: 'stats_central',
+    subExerciseId: 'ex_st2',
     chapterName: 'Measures of Dispersion',
     difficulty: 'Medium',
     questionText: 'If the Standard Deviation of a set of observations is 6, what is the Variance?',
@@ -2973,6 +2978,7 @@ export const MATH_QUESTIONS = [
   {
     id: 'stat_3',
     chapterId: 'probability',
+    subExerciseId: 'ex_st3',
     chapterName: 'Probability',
     difficulty: 'Easy',
     questionText: 'What is the probability of getting a sum of 7 when two fair dice are thrown simultaneously?',
@@ -2983,7 +2989,8 @@ export const MATH_QUESTIONS = [
   },
   {
     id: 'stat_4',
-    chapterId: 'correlation_reg',
+    chapterId: 'correlation_regression',
+    subExerciseId: 'ex_st4',
     chapterName: 'Correlation & Regression',
     difficulty: 'Hard',
     questionText: 'If the two regression coefficients are bxy = 0.8 and byx = 0.45, find the correlation coefficient r.',

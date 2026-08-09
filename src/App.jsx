@@ -3,7 +3,7 @@ import { loadUserProfileFromCookies, saveUserProfileToCookies } from './utils/co
 import { CA_MATH_CHAPTERS, MATH_QUESTIONS, FLASHCARDS } from './data/mathData';
 import { getXPForNextLevel, playSound, calculateXPAndLevel } from './utils/cookies';
 
-export function Navbar({ user, activeTab, onOpenQuickWindow }) {
+export function Navbar({ user, activeTab, onOpenQuickWindow, onOpenEmailModal, onOpenNoticeModal, isSidebarCollapsed, onToggleSidebar }) {
   const tabTitles = {
     dashboard: 'Dashboard Overview',
     chapters: 'CA Foundation Math Syllabus & Formulas',
@@ -16,21 +16,47 @@ export function Navbar({ user, activeTab, onOpenQuickWindow }) {
   };
 
   return (
-    <header className="sticky top-0 z-40 flex h-20 items-center justify-between border-b border-slate-800 bg-slate-900/90 px-8 backdrop-blur-xl">
-      <div>
-        <h1 className="text-xl font-bold text-white tracking-tight">{tabTitles[activeTab] || 'CA Foundation Math'}</h1>
-        <p className="text-xs text-slate-400">
-          Welcome back, <span className="font-semibold text-cyan-400">{user.name}</span> • Level {user.level} ({user.rankTitle})
-        </p>
+    <header className="sticky top-0 z-40 flex h-20 items-center justify-between border-b border-slate-800 bg-slate-900/90 px-8 backdrop-blur-xl transition-all duration-300">
+      <div className="flex items-center gap-4">
+        <button
+          onClick={onToggleSidebar}
+          className="rounded-xl border border-slate-800 bg-slate-950 px-3 py-2 text-slate-400 hover:border-indigo-500/50 hover:bg-slate-900 hover:text-white transition cursor-pointer shadow-sm flex items-center gap-1.5"
+          title={isSidebarCollapsed ? "Expand Sidebar (Wider View)" : "Collapse Sidebar (Full Screen View)"}
+        >
+          <span className="text-sm">{isSidebarCollapsed ? '⇥' : '⇤'}</span>
+          <span className="text-[11px] font-bold hidden md:inline">{isSidebarCollapsed ? 'Expand' : 'Collapse'}</span>
+        </button>
+        <div>
+          <h1 className="text-xl font-bold text-white tracking-tight">{tabTitles[activeTab] || 'CA Foundation Math'}</h1>
+          <p className="text-xs text-slate-400">
+            Welcome back, <span className="font-semibold text-cyan-400">{user.name}</span> • Level {user.level} ({user.rankTitle})
+          </p>
+        </div>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3 flex-wrap">
+        <button
+          onClick={onOpenEmailModal}
+          className="flex items-center gap-1.5 rounded-xl border border-indigo-500/40 bg-indigo-500/15 px-3 py-1.5 text-xs font-semibold text-indigo-300 hover:bg-indigo-500/30 hover:text-white transition shadow-sm cursor-pointer"
+          title="Send Direct Email / Feedback"
+        >
+          <span>📧 Direct Email</span>
+        </button>
+
+        <button
+          onClick={onOpenNoticeModal}
+          className="flex items-center gap-1.5 rounded-xl border border-cyan-500/40 bg-cyan-500/15 px-3 py-1.5 text-xs font-semibold text-cyan-300 hover:bg-cyan-500/30 hover:text-white transition shadow-sm cursor-pointer"
+          title="View Syllabus Notice"
+        >
+          <span>ℹ️ Notice</span>
+        </button>
+
         <button
           onClick={onOpenQuickWindow}
           className="flex items-center gap-2 rounded-xl border border-indigo-500/40 bg-indigo-500/10 px-3.5 py-1.5 text-xs font-bold text-indigo-300 hover:bg-indigo-500/20 hover:text-white transition shadow-sm cursor-pointer"
           title="Open Top-Right Quick Search Window"
         >
-          <span>🔍 Quick Search Window</span>
+          <span>🔍 Quick Search</span>
           <kbd className="hidden sm:inline-block rounded bg-indigo-950/80 px-1.5 py-0.5 text-[10px] text-indigo-400 border border-indigo-800">⌘K</kbd>
         </button>
 
@@ -47,7 +73,7 @@ export function Navbar({ user, activeTab, onOpenQuickWindow }) {
   );
 }
 
-export function Sidebar({ activeTab, setActiveTab, user }) {
+export function Sidebar({ activeTab, setActiveTab, user, isCollapsed, onToggleCollapse }) {
   const { currentLevelMinXP, nextLevelXP } = getXPForNextLevel(user.level);
   const currentXPInLevel = user.xp - currentLevelMinXP;
   const neededXPInLevel = nextLevelXP - currentLevelMinXP;
@@ -65,16 +91,27 @@ export function Sidebar({ activeTab, setActiveTab, user }) {
   ];
 
   return (
-    <aside className="fixed top-0 bottom-0 left-0 z-50 flex w-64 flex-col border-r border-slate-800 bg-slate-950/95 p-5 backdrop-blur-2xl">
-      <div className="mb-6 pb-5 border-b border-slate-800">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 text-xl font-bold text-white shadow-lg shadow-indigo-500/30">
-            ∑
+    <aside className={`fixed top-0 bottom-0 left-0 z-50 flex flex-col border-r border-slate-800 bg-slate-950/95 p-4 backdrop-blur-2xl transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-64'}`}>
+      <div className="mb-6 pb-4 border-b border-slate-800">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 text-xl font-bold text-white shadow-lg shadow-indigo-500/30">
+              ∑
+            </div>
+            {!isCollapsed && (
+              <div className="overflow-hidden">
+                <h2 className="text-base font-bold text-white leading-tight whitespace-nowrap">CA Math Hub</h2>
+                <span className="text-xs font-semibold text-cyan-400 whitespace-nowrap">CA Foundation Prep</span>
+              </div>
+            )}
           </div>
-          <div>
-            <h2 className="text-base font-bold text-white leading-tight">CA Math Hub</h2>
-            <span className="text-xs font-semibold text-cyan-400">CA Foundation Prep</span>
-          </div>
+          <button
+            onClick={onToggleCollapse}
+            className="hidden sm:flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-slate-800 bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-white transition cursor-pointer"
+            title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+          >
+            <span className="text-xs">{isCollapsed ? '▶' : '◀'}</span>
+          </button>
         </div>
       </div>
 
@@ -83,32 +120,44 @@ export function Sidebar({ activeTab, setActiveTab, user }) {
           <button
             key={item.id}
             onClick={() => setActiveTab(item.id)}
-            className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
+            title={isCollapsed ? item.label : undefined}
+            className={`flex w-full items-center gap-3 rounded-xl py-3 text-sm font-medium transition-all duration-200 cursor-pointer ${
+              isCollapsed ? 'justify-center px-0' : 'px-4'
+            } ${
               activeTab === item.id
                 ? 'bg-gradient-to-r from-indigo-500/20 to-cyan-500/10 text-white border border-indigo-500/40 shadow-md shadow-indigo-500/10'
                 : 'text-slate-400 hover:bg-slate-900 hover:text-white'
             }`}
           >
-            <span className="text-lg">{item.icon}</span>
-            <span>{item.label}</span>
+            <span className="text-lg shrink-0">{item.icon}</span>
+            {!isCollapsed && <span className="whitespace-nowrap overflow-hidden text-ellipsis">{item.label}</span>}
           </button>
         ))}
       </nav>
 
       <div className="mt-auto rounded-xl border border-slate-800 bg-slate-900/60 p-3.5 backdrop-blur-md">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-bold text-cyan-400">
-            Lvl {user.level} • {user.rankTitle}
-          </span>
-          <span className="text-[11px] text-slate-400">{user.xp} XP</span>
-        </div>
-        <div className="h-2 w-full overflow-hidden rounded-full bg-slate-800">
-          <div className="h-full rounded-full bg-gradient-to-r from-cyan-400 via-indigo-500 to-purple-500 transition-all duration-500" style={{ width: `${progressPercent}%` }}></div>
-        </div>
-        <div className="mt-1.5 flex justify-between text-[10px] text-slate-500">
-          <span>Level Progress</span>
-          <span>{progressPercent}%</span>
-        </div>
+        {isCollapsed ? (
+          <div className="flex flex-col items-center gap-1 text-center">
+            <span className="text-xs font-extrabold text-cyan-400">L{user.level}</span>
+            <span className="text-[10px] text-slate-400 font-bold">{progressPercent}%</span>
+          </div>
+        ) : (
+          <>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-bold text-cyan-400">
+                Lvl {user.level} • {user.rankTitle}
+              </span>
+              <span className="text-[11px] text-slate-400">{user.xp} XP</span>
+            </div>
+            <div className="h-2 w-full overflow-hidden rounded-full bg-slate-800">
+              <div className="h-full rounded-full bg-gradient-to-r from-cyan-400 via-indigo-500 to-purple-500 transition-all duration-500" style={{ width: `${progressPercent}%` }}></div>
+            </div>
+            <div className="mt-1.5 flex justify-between text-[10px] text-slate-500">
+              <span>Level Progress</span>
+              <span>{progressPercent}%</span>
+            </div>
+          </>
+        )}
       </div>
     </aside>
   );
@@ -232,7 +281,6 @@ export function DashboardPage({ user, setActiveTab }) {
 
 export function ChaptersPage({ setActiveTab, setSelectedChapterIdForQuiz, setSelectedSubExerciseIdForQuiz }) {
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [viewMode, setViewMode] = useState('inside');
 
   const filtered = selectedCategory === 'All'
     ? CA_MATH_CHAPTERS
@@ -244,7 +292,7 @@ export function ChaptersPage({ setActiveTab, setSelectedChapterIdForQuiz, setSel
     setActiveTab('quiz');
   };
 
-  const handlePracticeOutside = (chapterId, subId) => {
+  const handlePracticeSubExercise = (chapterId, subId) => {
     setSelectedChapterIdForQuiz(chapterId);
     if (setSelectedSubExerciseIdForQuiz) setSelectedSubExerciseIdForQuiz(subId);
     setActiveTab('quiz');
@@ -258,109 +306,79 @@ export function ChaptersPage({ setActiveTab, setSelectedChapterIdForQuiz, setSel
           <p className="text-sm text-slate-400">Chapter notes, key formulas, shortcut memory tricks & marks weightage.</p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="flex bg-slate-900 border border-slate-800 p-1 rounded-xl">
+        <div className="flex gap-1.5">
+          {['All', 'Math', 'Logical Reasoning', 'Statistics'].map(cat => (
             <button
-              onClick={() => setViewMode('inside')}
-              className={`rounded-lg px-3 py-1.5 text-xs font-bold transition flex items-center gap-1.5 ${viewMode === 'inside' ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-400 hover:text-white'}`}
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              className={`rounded-xl px-3 py-1.5 text-xs font-semibold transition ${selectedCategory === cat ? 'bg-slate-700 text-white border border-slate-600' : 'bg-slate-900 text-slate-400 border border-slate-800 hover:bg-slate-800'}`}
             >
-              📂 Inside Chapters
+              {cat}
             </button>
-            <button
-              onClick={() => setViewMode('outside')}
-              className={`rounded-lg px-3 py-1.5 text-xs font-bold transition flex items-center gap-1.5 ${viewMode === 'outside' ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-400 hover:text-white'}`}
-            >
-              📄 Outside Exercises
-            </button>
-          </div>
-
-          <div className="flex gap-1.5">
-            {['All', 'Math', 'Logical Reasoning', 'Statistics'].map(cat => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`rounded-xl px-3 py-1.5 text-xs font-semibold transition ${selectedCategory === cat ? 'bg-slate-700 text-white border border-slate-600' : 'bg-slate-900 text-slate-400 border border-slate-800 hover:bg-slate-800'}`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
+          ))}
         </div>
       </div>
 
-      {viewMode === 'inside' ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {filtered.map(ch => (
-            <div key={ch.id} className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 shadow-lg backdrop-blur-xl flex flex-col">
-              <div className="flex justify-between items-center mb-3">
-                <span className="rounded-full bg-cyan-500/10 border border-cyan-500/30 px-2.5 py-0.5 text-xs font-semibold text-cyan-400">{ch.category}</span>
-                <span className="text-xs font-bold text-amber-400">Weightage: {ch.weightage}</span>
-              </div>
-              <h2 className="text-xl font-bold text-white mb-2">{ch.title}</h2>
-              <p className="text-sm text-slate-400 mb-4 flex-1">{ch.description}</p>
-
-              {ch.subExercises && ch.subExercises.length > 0 && (
-                <div className="rounded-xl bg-slate-950/60 p-3 border border-cyan-500/20 mb-4 space-y-2">
-                  <div className="flex justify-between items-center text-xs font-bold text-cyan-400 mb-1">
-                    <span>📑 Sub-Exercises & Units ({ch.subExercises.length})</span>
-                    <span className="text-[10px] text-slate-400 font-normal">Choose Practice Mode:</span>
-                  </div>
-                  <div className="grid grid-cols-1 gap-2 text-xs">
-                    {ch.subExercises.map(sub => (
-                      <div
-                        key={sub.id}
-                        className="rounded-lg bg-slate-900 p-2.5 border border-slate-800 flex flex-wrap items-center justify-between gap-2 hover:border-slate-700 transition"
-                      >
-                        <div className="font-medium text-slate-200 text-xs">
-                          <span className="font-bold text-amber-400">{sub.title.split(':')[0]}</span>: {sub.title.split(':')[1] || sub.title}
-                        </div>
-                        <div className="flex gap-1.5">
-                          <button
-                            onClick={() => handlePracticeInside(ch.id)}
-                            className="rounded-md bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-500/40 px-2.5 py-1 text-[11px] font-semibold text-indigo-300 transition cursor-pointer flex items-center gap-1"
-                          >
-                            🎯 Inside Chapter
-                          </button>
-                          <button
-                            onClick={() => handlePracticeOutside(ch.id, sub.id)}
-                            className="rounded-md bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 px-2.5 py-1 text-[11px] font-semibold text-amber-300 transition cursor-pointer flex items-center gap-1"
-                          >
-                            📄 Outside Ex
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <div className="rounded-xl bg-slate-950/60 p-4 border border-slate-800 mb-4">
-                <div className="text-xs font-bold text-cyan-400 mb-2">📐 Key Formulas Preview</div>
-                <ul className="space-y-1 text-xs text-slate-300">
-                  {ch.formulas.slice(0, 2).map((f, idx) => (
-                    <li key={idx}>
-                      <strong>{f.title}:</strong> <code className="text-indigo-300 bg-indigo-500/10 px-1.5 py-0.5 rounded">{f.formula}</code>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <button
-                onClick={() => handlePracticeInside(ch.id)}
-                className="w-full rounded-xl bg-indigo-600 hover:bg-indigo-500 py-3 text-xs font-bold text-white transition cursor-pointer shadow-lg shadow-indigo-600/20"
-              >
-                ⚡ Practice Full Chapter Quiz
-              </button>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {filtered.map(ch => (
+          <div key={ch.id} className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 shadow-lg backdrop-blur-xl flex flex-col">
+            <div className="flex justify-between items-center mb-3">
+              <span className="rounded-full bg-cyan-500/10 border border-cyan-500/30 px-2.5 py-0.5 text-xs font-semibold text-cyan-400">{ch.category}</span>
+              <span className="text-xs font-bold text-amber-400">Weightage: {ch.weightage}</span>
             </div>
-          ))}
-        </div>
-      ) : (
-        <div className="space-y-4">
-          <div className="rounded-xl bg-indigo-950/40 border border-indigo-500/30 p-4 text-xs text-slate-300">
-            💡 <strong>Outside Exercises View:</strong> Direct standalone access to every exercise unit across the syllabus.
+            <h2 className="text-xl font-bold text-white mb-2">{ch.title}</h2>
+            <p className="text-sm text-slate-400 mb-4 flex-1">{ch.description}</p>
+
+            {ch.subExercises && ch.subExercises.length > 0 && (
+              <div className="rounded-xl bg-slate-950/60 p-3 border border-cyan-500/20 mb-4 space-y-2">
+                <div className="flex justify-between items-center text-xs font-bold text-cyan-400 mb-1">
+                  <span>📑 Sub-Exercises & Units ({ch.subExercises.length})</span>
+                  <span className="text-[10px] text-slate-400 font-normal">Choose Practice Mode:</span>
+                </div>
+                <div className="grid grid-cols-1 gap-2 text-xs">
+                  {ch.subExercises.map(sub => (
+                    <div
+                      key={sub.id}
+                      className="rounded-lg bg-slate-900 p-2.5 border border-slate-800 flex flex-wrap items-center justify-between gap-2 hover:border-slate-700 transition"
+                    >
+                      <div className="font-medium text-slate-200 text-xs">
+                        <span className="font-bold text-amber-400">{sub.title.split(':')[0]}</span>: {sub.title.split(':')[1] || sub.title}
+                      </div>
+                      <div className="flex gap-1.5">
+                        <button
+                          onClick={() => handlePracticeSubExercise(ch.id, sub.id)}
+                          className="rounded-md bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-500/40 px-2.5 py-1 text-[11px] font-semibold text-indigo-300 transition cursor-pointer flex items-center gap-1"
+                          title={`Practice ${sub.title}`}
+                        >
+                          🎯 Start
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="rounded-xl bg-slate-950/60 p-4 border border-slate-800 mb-4">
+              <div className="text-xs font-bold text-cyan-400 mb-2">📐 Key Formulas Preview</div>
+              <ul className="space-y-1 text-xs text-slate-300">
+                {ch.formulas.slice(0, 2).map((f, idx) => (
+                  <li key={idx}>
+                    <strong>{f.title}:</strong> <code className="text-indigo-300 bg-indigo-500/10 px-1.5 py-0.5 rounded">{f.formula}</code>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <button
+              onClick={() => handlePracticeInside(ch.id)}
+              className="w-full rounded-xl bg-indigo-600 hover:bg-indigo-500 py-3 text-xs font-bold text-white transition cursor-pointer shadow-lg shadow-indigo-600/20"
+            >
+              ⚡ Practice Full Chapter Quiz
+            </button>
           </div>
-        </div>
-      )}
+        ))}
+      </div>
     </div>
   );
 }
@@ -375,8 +393,8 @@ export function QuizPage({ user, setUser, selectedChapterIdForQuiz, setSelectedC
   const availableQuestions = selectedSubExerciseIdForQuiz
     ? MATH_QUESTIONS.filter(q => q.subExerciseId === selectedSubExerciseIdForQuiz)
     : selectedChapterIdForQuiz
-    ? MATH_QUESTIONS.filter(q => q.chapterId === selectedChapterIdForQuiz)
-    : MATH_QUESTIONS;
+      ? MATH_QUESTIONS.filter(q => q.chapterId === selectedChapterIdForQuiz)
+      : MATH_QUESTIONS;
 
   const currentQ = availableQuestions[currentQuestionIndex];
 
@@ -698,11 +716,10 @@ export function TopRightQuickWindowModal({ isOpen, onClose, setActiveTab, setSel
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`rounded-lg px-2.5 py-1 text-[11px] font-semibold transition cursor-pointer ${
-                selectedCategory === cat
-                  ? 'bg-indigo-600 text-white'
-                  : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-slate-200'
-              }`}
+              className={`rounded-lg px-2.5 py-1 text-[11px] font-semibold transition cursor-pointer ${selectedCategory === cat
+                ? 'bg-indigo-600 text-white'
+                : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-slate-200'
+                }`}
             >
               {cat}
             </button>
@@ -854,11 +871,10 @@ export function QuestionTablePage({ setActiveTab, setSelectedChapterIdForQuiz, s
                 <button
                   key={diff}
                   onClick={() => setSelectedDifficulty(diff)}
-                  className={`flex-1 rounded-lg py-1.5 text-[11px] font-bold transition ${
-                    selectedDifficulty === diff
-                      ? 'bg-indigo-600 text-white shadow-md'
-                      : 'text-slate-400 hover:text-white'
-                  }`}
+                  className={`flex-1 rounded-lg py-1.5 text-[11px] font-bold transition ${selectedDifficulty === diff
+                    ? 'bg-indigo-600 text-white shadow-md'
+                    : 'text-slate-400 hover:text-white'
+                    }`}
                 >
                   {diff}
                 </button>
@@ -892,8 +908,8 @@ export function QuestionTablePage({ setActiveTab, setSelectedChapterIdForQuiz, s
                   const isExpanded = expandedQuestionId === q.id;
                   const diffColor =
                     q.difficulty === 'Easy' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' :
-                    q.difficulty === 'Hard' ? 'bg-rose-500/10 text-rose-400 border-rose-500/30' :
-                    'bg-amber-500/10 text-amber-400 border-amber-500/30';
+                      q.difficulty === 'Hard' ? 'bg-rose-500/10 text-rose-400 border-rose-500/30' :
+                        'bg-amber-500/10 text-amber-400 border-amber-500/30';
 
                   return (
                     <React.Fragment key={q.id || idx}>
@@ -939,11 +955,10 @@ export function QuestionTablePage({ setActiveTab, setSelectedChapterIdForQuiz, s
                                 {q.options.map((opt, oIdx) => (
                                   <div
                                     key={oIdx}
-                                    className={`rounded-lg p-2 border ${
-                                      oIdx === q.correctIndex
-                                        ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-300 font-bold'
-                                        : 'bg-slate-950 border-slate-800 text-slate-300'
-                                    }`}
+                                    className={`rounded-lg p-2 border ${oIdx === q.correctIndex
+                                      ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-300 font-bold'
+                                      : 'bg-slate-950 border-slate-800 text-slate-300'
+                                      }`}
                                   >
                                     <span className="font-bold mr-1.5">{String.fromCharCode(65 + oIdx)}.</span> {opt}
                                     {oIdx === q.correctIndex && <span className="ml-2 text-emerald-400">✓ Correct</span>}
@@ -994,21 +1009,184 @@ export function ProfilePage({ user, setUser }) {
   );
 }
 
+export function EmailModal({ isOpen, onClose }) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [subject, setSubject] = useState('');
+  const [message, setMessage] = useState('');
+  const [sentSuccess, setSentSuccess] = useState(false);
+
+  if (!isOpen) return null;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!message) return;
+    const recipient = 'sahil2412l@gmail.com';
+    const emailSub = encodeURIComponent(`[CA Math Hub] ${subject || 'Feedback'}`);
+    const emailBody = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+    window.open(`mailto:${recipient}?subject=${emailSub}&body=${emailBody}`, '_blank');
+    setSentSuccess(true);
+    setTimeout(() => {
+      setSentSuccess(false);
+      onClose();
+    }, 2000);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+      <div className="w-full max-w-lg rounded-2xl border border-indigo-500/40 bg-slate-900 p-6 space-y-4 shadow-2xl">
+        <div className="flex justify-between items-center pb-2 border-b border-slate-800">
+          <h3 className="text-lg font-bold text-white flex items-center gap-2">
+            📧 Send Feedback / Message
+          </h3>
+          <button onClick={onClose} className="text-slate-400 hover:text-white text-xl cursor-pointer">✕</button>
+        </div>
+
+        {sentSuccess ? (
+          <div className="p-4 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-center font-bold text-sm">
+            ✓ Opening email client... Feedback message ready!
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <div>
+              <label className="block text-xs font-semibold text-slate-400 mb-1">Your Name</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Enter your name"
+                className="w-full rounded-xl bg-slate-800 border border-slate-700 px-3.5 py-2 text-xs text-white focus:border-indigo-500 focus:outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-400 mb-1">Your Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="name@example.com"
+                className="w-full rounded-xl bg-slate-800 border border-slate-700 px-3.5 py-2 text-xs text-white focus:border-indigo-500 focus:outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-400 mb-1">Subject</label>
+              <input
+                type="text"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                placeholder="Feedback, Bug Report, Question..."
+                className="w-full rounded-xl bg-slate-800 border border-slate-700 px-3.5 py-2 text-xs text-white focus:border-indigo-500 focus:outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-400 mb-1">Message *</label>
+              <textarea
+                required
+                rows="4"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Write your feedback or message here..."
+                className="w-full rounded-xl bg-slate-800 border border-slate-700 px-3.5 py-2 text-xs text-white focus:border-indigo-500 focus:outline-none"
+              ></textarea>
+            </div>
+            <div className="flex justify-end gap-2 pt-2">
+              <button type="button" onClick={onClose} className="px-4 py-2 rounded-xl bg-slate-800 text-xs font-semibold text-slate-300 hover:bg-slate-700">Cancel</button>
+              <button type="submit" className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white shadow-lg cursor-pointer">Send Email 🚀</button>
+            </div>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export function NoticeModal({ isOpen, onClose }) {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+      <div className="w-full max-w-xl rounded-2xl border border-cyan-500/40 bg-slate-900 p-6 space-y-4 shadow-2xl max-h-[85vh] overflow-y-auto">
+        <div className="flex justify-between items-center pb-2 border-b border-slate-800">
+          <h3 className="text-lg font-bold text-white flex items-center gap-2">
+            ℹ️ CA Foundation Syllabus & Exam Notice
+          </h3>
+          <button onClick={onClose} className="text-slate-400 hover:text-white text-xl cursor-pointer">✕</button>
+        </div>
+
+        <div className="space-y-4 text-xs text-slate-300">
+          <div className="p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-300">
+            📌 <strong>Paper 3: Quantitative Aptitude</strong> (100 Marks - 2 Hours Objective MCQ Test)
+          </div>
+
+          <div className="space-y-2">
+            <h4 className="font-bold text-white text-sm">Marks Distribution Breakdown:</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="p-3 rounded-xl bg-slate-800/80 border border-slate-700">
+                <div className="text-xs font-semibold text-slate-400">Part A</div>
+                <div className="text-sm font-extrabold text-cyan-400">Business Mathematics</div>
+                <div className="text-xs text-amber-400 font-bold mt-1">40 Marks</div>
+              </div>
+              <div className="p-3 rounded-xl bg-slate-800/80 border border-slate-700">
+                <div className="text-xs font-semibold text-slate-400">Part B</div>
+                <div className="text-sm font-extrabold text-indigo-400">Logical Reasoning</div>
+                <div className="text-xs text-amber-400 font-bold mt-1">20 Marks</div>
+              </div>
+              <div className="p-3 rounded-xl bg-slate-800/80 border border-slate-700">
+                <div className="text-xs font-semibold text-slate-400">Part C</div>
+                <div className="text-sm font-extrabold text-emerald-400">Statistics</div>
+                <div className="text-xs text-amber-400 font-bold mt-1">40 Marks</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <h4 className="font-bold text-white text-sm">Key Exam Rules & Tips:</h4>
+            <ul className="list-disc list-inside space-y-1.5 text-slate-300">
+              <li><strong>Negative Marking:</strong> Each wrong question incurs a penalty of <span className="text-rose-400 font-bold">0.25 marks</span>.</li>
+              <li><strong>Calculator Rules:</strong> ICAI permits standard 12-digit simple memory calculators (M+, M-, MRC, √). Financial & scientific functions strictly disallowed in physical exam hall.</li>
+              <li><strong>Passing Criteria:</strong> Minimum 40% in each paper and aggregate 50% across all papers.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="flex justify-end pt-2 border-t border-slate-800">
+          <button onClick={onClose} className="px-5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-xs font-bold text-white cursor-pointer">
+            Close Notice
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const [user, setUser] = useState(() => loadUserProfileFromCookies());
   const [activeTab, setActiveTab] = useState('dashboard');
   const [selectedChapterIdForQuiz, setSelectedChapterIdForQuiz] = useState(null);
   const [selectedSubExerciseIdForQuiz, setSelectedSubExerciseIdForQuiz] = useState(null);
   const [showQuickWindow, setShowQuickWindow] = useState(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
+  const [showNoticeModal, setShowNoticeModal] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   return (
     <div className="flex min-h-screen bg-slate-950 text-slate-100 font-sans antialiased">
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} user={user} />
-      <main className="flex-1 ml-64 min-w-0">
+      <Sidebar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        user={user}
+        isCollapsed={isSidebarCollapsed}
+        onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+      />
+      <main className={`flex-1 min-w-0 transition-all duration-300 ${isSidebarCollapsed ? 'ml-20' : 'ml-64'}`}>
         <Navbar
           user={user}
           activeTab={activeTab}
           onOpenQuickWindow={() => setShowQuickWindow(true)}
+          onOpenEmailModal={() => setShowEmailModal(true)}
+          onOpenNoticeModal={() => setShowNoticeModal(true)}
+          isSidebarCollapsed={isSidebarCollapsed}
+          onToggleSidebar={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
         />
 
         <TopRightQuickWindowModal
@@ -1018,6 +1196,9 @@ export default function App() {
           setSelectedChapterIdForQuiz={setSelectedChapterIdForQuiz}
           setSelectedSubExerciseIdForQuiz={setSelectedSubExerciseIdForQuiz}
         />
+
+        <EmailModal isOpen={showEmailModal} onClose={() => setShowEmailModal(false)} />
+        <NoticeModal isOpen={showNoticeModal} onClose={() => setShowNoticeModal(false)} />
 
         {activeTab === 'dashboard' && <DashboardPage user={user} setActiveTab={setActiveTab} />}
         {activeTab === 'chapters' && (
